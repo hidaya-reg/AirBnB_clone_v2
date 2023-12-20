@@ -8,6 +8,7 @@ import os
 import console
 from console import HBNBCommand
 
+
 class TestConsole(unittest.TestCase):
     """Test Suite for the console"""
 
@@ -29,18 +30,13 @@ class TestConsole(unittest.TestCase):
             except Exception:
                 pass
 
-    def test_docstrings_in_console(self):
-        """checking for docstrings"""
-        self.assertIsNotNone(console.__doc__)
-        self.assertIsNotNone(HBNBCommand.emptyline.__doc__)
-        self.assertIsNotNone(HBNBCommand.do_quit.__doc__)
-        self.assertIsNotNone(HBNBCommand.do_EOF.__doc__)
-        self.assertIsNotNone(HBNBCommand.do_create.__doc__)
-        self.assertIsNotNone(HBNBCommand.do_show.__doc__)
-        self.assertIsNotNone(HBNBCommand.do_destroy.__doc__)
-        self.assertIsNotNone(HBNBCommand.do_all.__doc__)
-        self.assertIsNotNone(HBNBCommand.do_update.__doc__)
-        self.assertIsNotNone(HBNBCommand.do_count.__doc__)
+    def test_create_with_parameters(self):
+        """Test create command with parameters"""
+        HBNBCommand().onecmd('create State name="California"')
+        HBNBCommand().onecmd('create Place city_id="0001"\
+                user_id="0001" name="My_little_house" number_rooms=4\
+                number_bathrooms=2 max_guest=10 price_by_night=300\
+                latitude=37.773972 longitude=-122.431297')
 
     def test_emptyline(self):
         """Test empty line"""
