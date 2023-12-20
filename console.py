@@ -134,10 +134,13 @@ class HBNBCommand(cmd.Cmd):
                     value = value[1:-1].replace('\\"', '"')
                 else:
                     try:
-                        eval(value)
-                    except Exception:
-                        print(f"** Calue error {value}")
-                        pass
+                        if '.' in value:
+                            value = float(value)
+                        else:
+                            value = int(value)
+                    except ValueError:
+                        print(f"** Value error for {value}")
+                        continue
                 if hasattr(new_instance, key):
                     setattr(new_instance, key, value)
         storage.new(new_instance)
