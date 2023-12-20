@@ -115,34 +115,33 @@ class HBNBCommand(cmd.Cmd):
 
     def do_create(self, args):
         """ Create an object of any class with parameters"""
-        class_name = args.split(" ")[0]
-        if not class_name:
+        if not args:
             print("** class name missing **")
             return
-        elif class_name not in HBNBCommand.classes:
+        params = args.split(' ')
+        if params[0] not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
-        args = args.split(" ")[1:]
-        new_instance = HBNBCommand.classes[class_name]()
-        for arg in args:
-            if '=' in arg:
-                key, value = arg.split('=')
-                key = key.replace('_', ' ').strip()
-                value = value.replace('_', ' ').strip()
 
-                if value.startswith('"') and value.endswith('"'):
-                    value = value[1:-1].replace('\\"', '"')
-                else:
-                    try:
-                        if '.' in value:
-                            value = float(value)
-                        else:
-                            value = int(value)
-                    except ValueError:
-                        print(f"** Value error for {value}")
-                        continue
-                if hasattr(new_instance, key):
-                    setattr(new_instance, key, value)
+        new_instance = HBNBCommand.classes[params[0]]()
+        for arg in params[1:]:
+            key, value = arg.split('=')
+            key = key.replace('_', ' ').strip()
+            value = value.replace('_', ' ').strip()
+
+            if value.startswith('"') and value.endswith('"'):
+                value = value[1:-1].replace('\\"', '"')
+            else:
+                try:
+                    if '.' in value:
+                        value = float(value)
+                    else:
+                        value = int(value)
+                except ValueError:
+                    print(f"** Value error for {value}")
+                    continue
+            if hasattr(new_instance, key):
+                setattr(new_instance, key, value)
         storage.new(new_instance)
         print(new_instance.id)
         new_instance.save()
