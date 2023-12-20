@@ -114,22 +114,40 @@ class HBNBCommand(cmd.Cmd):
         pass
 
     def do_create(self, args):
-        """ Create an object of any class"""
-        if not args:
+        """ Create an object of any class with parameters"""
+        class_name = args.split(" ")[0]
+        if not class_name:
             print("** class name missing **")
             return
-        elif args not in HBNBCommand.classes:
+        elif class_name not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
-        new_instance = HBNBCommand.classes[args]()
-        storage.save()
+        args = args.split(" ")[1:]
+        new_instance = HBNBCommand.classes[class_name]()
+        for arg in args:
+            if '=' in arg:
+                key, value = arg.split('=')
+                key = key.replace('_', ' ').strip()
+                value = value.replace('_', ' ').strip()
+
+                if value.startswith('"') and value.endswith('"'):
+                    value = value[1:-1].replace('\\"', '"')
+                else:
+                    try:
+                        eval(value)
+                    except Exception:
+                        print(f"** Calue error {value}")
+                        pass
+                if hasattr(new_instance, key):
+                    setattr(new_instance, key, value)
+        storage.new(new_instance)
         print(new_instance.id)
-        storage.save()
+        new_instance.save()
 
     def help_create(self):
         """ Help information for the create method """
         print("Creates a class of any type")
-        print("[Usage]: create <className>\n")
+        print("[Usage]: create <className> <param1>=<value1> <param2>=<value2> ...\n")
 
     def do_show(self, args):
         """ Method to show an individual object """
