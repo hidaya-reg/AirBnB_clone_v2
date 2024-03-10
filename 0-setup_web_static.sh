@@ -9,7 +9,7 @@ mkdir -p /data/web_static/releases/test/
 mkdir -p /data/web_static/shared/
 
 #HTML file
-echo "Holberton By Dlhz" > /data/web_static/releases/test/index.html
+echo "Holberton School" > /data/web_static/releases/test/index.html
 
 #Symbolic link
 sudo ln -sf /data/web_static/releases/test /data/web_static/current
